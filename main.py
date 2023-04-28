@@ -12,13 +12,13 @@ def translate_to_english():
     prompt = PromptTemplate(template=template, input_variables=["input"])
     return LLMChain(llm=llm, prompt=prompt, verbose=True)
 
-def translate_to_sql():
+def query_db():
     db = SQLDatabase.from_uri("sqlite:///chinook.db")
     llm = OpenAI(model_name="gpt-3.5-turbo")
     return SQLDatabaseChain(llm=llm, database=db, verbose=True)
 
 def main():
-    chain = SimpleSequentialChain(chains=[translate_to_english(), translate_to_sql()], verbose=True)
+    chain = SimpleSequentialChain(chains=[translate_to_english(), query_db()], verbose=True)
     response = chain.run("Berapa banyak karyawan yang ada?")
     print(response)
 
